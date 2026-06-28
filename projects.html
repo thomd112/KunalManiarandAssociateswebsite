@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <title>Kunal Maniar and Associates - Landscapes</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --primary-text-color: #000000;
+            --secondary-text-color: #757770;
+            --background-color: #ffffff;
+            --sidebar-background: #fff;
+            --panel-background: #ffffff;
+            --hover-color: #CAD090;
+            --active-dot-color: #809354;
+            --scrollbar-thumb-color: rgba(202, 208, 144, 0.6);
+            --scrollbar-thumb-hover-color: rgba(202, 208, 144, 0.9);
+            --font-family-dm-sans: 'DM Sans', sans-serif;
+            --header-height: 80px;
+            --sidebar-width: 320px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--background-color);
+            width: 100%;
+            position: relative;
+            font-family: var(--font-family-dm-sans);
+            font-weight: 300;
+            color: var(--primary-text-color);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── TOP NAV ── */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+
+
+.brand-logo:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+        .brand-link {
+            display: block;
+            line-height: 0;
+        }
+
+        .brand-link:hover {
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--primary-text-color);
+            font-size: 16px;
+            font-weight: 200;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-transform: capitalize;
+        }
+
+        .nav-links a:hover {
+            color: var(--hover-color);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-text-color);
+            font-weight: 300;
+        }
+
+        /* ── HAMBURGER (mobile only) ── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 1.5px;
+            background: var(--primary-text-color);
+            transition: all 0.25s ease;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* Mobile nav drawer */
+        .mobile-nav-drawer {
+            display: none;
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            z-index: 9;
+            padding: 20px 24px 28px;
+            border-bottom: 1px solid #eaeaea;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mobile-nav-drawer.open {
+            display: flex;
+        }
+
+        .mobile-nav-drawer a {
+            color: var(--primary-text-color);
+            font-size: 18px;
+            font-weight: 200;
+            text-decoration: none;
+            text-transform: capitalize;
+        }
+
+        /* ── LAYOUT ── */
+        .app-container {
+            display: flex;
+            height: calc(100vh - var(--header-height));
+            margin-top: var(--header-height);
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--sidebar-background);
+            box-shadow: 1px 0 15px rgba(0,0,0,0.07);
+            overflow-y: auto;
+            padding: 32px 0;
+            z-index: 2;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb-color);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover-color);
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 60px 0;
+        }
+
+        .year-label {
+            margin: 0 40px 10px 40px;
+            font-size: 17px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 4px;
+        }
+
+        .project-list {
+            list-style: none;
+            padding: 0 40px;
+            margin: 0 0 35px 0;
+        }
+
+        .project-item {
+            padding: 12px 10px;
+            margin-bottom: 13px;
+            cursor: pointer;
+            position: relative;
+            font-size: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .project-item.active {
+            background: #ffffff;
+        }
+
+        .project-item:hover {
+            background-color: #ffffff;
+        }
+
+        .project-title-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            margin-left: -14px;
+            justify-content: flex-start;
+        }
+
+        .project-dot {
+            width: 6px;
+            height: 6px;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .project-item.active .project-dot {
+            background: var(--active-dot-color);
+            width: 8px;
+            height: 8px;
+        }
+
+        .project-meta {
+            font-size: 13px;
+            color: var(--secondary-text-color);
+            margin-top: 2px;
+            margin-left: 16px;
+        }
+
+        .project-text-wrapper {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .project-info-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            margin-left: auto;
+            font-size: 20px;
+            font-weight: 100;
+            color: var(--primary-text-color);
+            cursor: pointer;
+            transition: transform 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+            user-select: none;
+            flex-shrink: 0;
+            margin-right: -10px;
+            line-height: 1;
+        }
+
+        .project-info-toggle:hover {
+            color: var(--hover-color);
+        }
+
+        .project-info-toggle.active {
+            transform: rotate(45deg);
+            color: var(--active-dot-color);
+        }
+
+        .project-details-content {
+            margin: 0 0 10px 16px;
+            padding-top: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--secondary-text-color);
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+            opacity: 1;
+        }
+
+        .project-details-content.hidden-content {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+        }
+
+        /* ── DISPLAY PANEL ── */
+        .display-panel {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--panel-background);
+            padding: 30px 20px 20px;
+            overflow: hidden;
+        }
+
+        .image-card {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .display-img {
+            display: block;
+            width: 100%;
+            max-width: 1100px;
+            height: auto;
+            max-height: calc(100vh - var(--header-height) - 100px);
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            flex-shrink: 1;
+        }
+
+        .display-img.active {
+            opacity: 1;
+        }
+
+        .image-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 12px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .details-left, .details-right {
+            min-width: 0;
+            flex: 0 0 auto;
+        }
+
+        .details-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 12px;
+        }
+
+        .details-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-left: 12px;
+        }
+
+        .image-navigation {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .nav-arrow {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+            padding: 0;
+        }
+
+        .nav-arrow:hover {
+            opacity: 0.6;
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow svg {
+            width: 20px;
+            height: 20px;
+            stroke: #999;
+            stroke-width: 1.5;
+        }
+
+        .image-counter {
+            font-size: 14px;
+            color: var(--secondary-text-color);
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .image-error {
+            padding: 40px;
+            text-align: center;
+            color: var(--secondary-text-color);
+            font-style: italic;
+        }
+
+        /* ── TABLET (≤1024px) ── */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 260px;
+            }
+
+            .top-nav {
+                padding: 0 24px;
+            }
+
+            .nav-links {
+                gap: 24px;
+            }
+
+            .year-label {
+                margin: 0 24px 10px 24px;
+            }
+
+            .project-list {
+                padding: 0 24px;
+            }
+
+            .display-panel {
+                padding: 20px 16px 16px;
+            }
+
+            .display-img {
+                max-height: calc(100vh - var(--header-height) - 90px);
+            }
+        }
+
+        /* ── MOBILE (≤768px): stack vertically ── */
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 60px;
+            }
+
+            .top-nav {
+                padding: 0 20px;
+            }
+
+            /* Hide desktop nav links, show hamburger */
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            /* Stack layout vertically */
+            .app-container {
+                flex-direction: column;
+                height: auto;
+                min-height: calc(100vh - var(--header-height));
+                overflow: visible;
+            }
+
+            /* Sidebar becomes a horizontal-scroll list on mobile */
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 45vh;
+                box-shadow: 0 1px 15px rgba(0,0,0,0.07);
+                padding: 16px 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .year-label {
+                margin: 0 20px 8px 20px;
+                font-size: 15px;
+            }
+
+            .project-list {
+                padding: 0 20px;
+                margin-bottom: 20px;
+            }
+
+            .project-item {
+                padding: 10px 8px;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            /* Display panel fills remaining space */
+            .display-panel {
+                flex: 1;
+                min-height: 55vw;
+                padding: 16px;
+                overflow: visible;
+                justify-content: flex-start;
+            }
+
+            .image-card {
+                height: auto;
+                justify-content: flex-start;
+            }
+
+            .display-img {
+                max-height: 52vw;
+                min-height: 180px;
+                object-fit: cover;
+            }
+
+            .image-details {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding-top: 10px;
+            }
+
+            .details-left {
+                margin-right: 0;
+                flex: 1 1 auto;
+            }
+
+            .details-right {
+                margin-left: 0;
+                flex: 1 1 auto;
+                align-items: flex-end;
+            }
+        }
+
+        /* ── SMALL MOBILE (≤480px) ── */
+        @media (max-width: 480px) {
+            .brand-logo {
+                width: 38px;
+                height: 38px;
+            }
+
+            .display-img {
+                max-height: 55vw;
+            }
+
+            .project-details-content {
+                font-size: 12px;
+            }
+
+            .image-details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .details-right {
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .image-navigation {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="brand-section">
+            <img src="logo.png" class="brand-logo" alt="KMA Logo" id="brandLogo">
+        </div>
+        <nav class="nav-links">
+            <a href="projects.html" class="active">Index</a>
+     
+            <a href="press.html">Press</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Open navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <!-- Mobile nav drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <a href="index.html">Index</a>
+
+        <a href="#press">Press</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="app-container">
+        <div class="sidebar">
+            
+            <div class="year-block">
+                <div class="year-label">Landscapes</div>
+                <ul class="project-list">
+                    
+            <li class="project-item" data-images="carpediem_1.jpg,carpediem_2.jpg," data-title="Carpe Diem" data-location="Alibaug, Maharashtra" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Carpe Diem</div>
+                                <span class="project-info-toggle" data-project-title="Carpe Diem">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Alibaug / Outhouse</div>
+                        <div class="project-meta"></div>
+                        <div class="project-details-content hidden-content">
+This coastal garden exemplifies xeriscaping in a tropical context. Towering palms interspersed around grass mounds, bold succulents and drought-tolerant natives creare a vibrant, resilient landscapes=. Slabs of local grannite are laid loosely on sand, weaving cement-free paths through the estate. Boulders found onsite are strategically littered as interstitial elements, tying the foliage and hardscape into a cohesive whole. The poolscape, with its intimate island and expansive deck offer contemplative spaces to sit and savour dramatic marine vistas.                         </div>
+                    </li>
+
+                    <li class="project-item" data-images="cf_1.jpg,cf_2.jpg,cf_3.jpg,cf_4.jpg" data-title="Casa Feliz" data-location="Mahabaleshwar, Maharashtra" data-type="Weekend Retreat">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Casa Feliz</div>
+                                <span class="project-info-toggle" data-project-title="Casa Feliz">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Alibaug / Outhouse</div>
+                        <div class="project-meta"></div>
+                        <div class="project-details-content hidden-content">
+An informal stone path lined with Rhapis and Kentia palms leads to the home, framed by Frangipani. Lush foliage surrounds an al fresco dining area and cradles the pool, with Polypodium ferns and sculptural logs littered across this garden of earthly delights. The compisition of gravel paths and grass mounds in the backyard is emulated in the courtyard, blurring boundaries between interior and exterior. Permeable surfaces and mindful native planting weave sustainablilty into the effortless, airy charm of tropical living.                       </div>
+                    </li>
+
+                    <li class="project-item" data-images="df_1.jpg,df_2.jpg,df_3.jpg," data-title="Dragon Fly" data-location="Mumbai, Maharashtra" data-type="Private Residence">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Dragon Fly</div>
+                                <span class="project-info-toggle" data-project-title="Dragon Fly">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Alibaug / Outhouse</div>
+                        <div class="project-meta"></div>
+                        <div class="project-details-content hidden-content">
+Nestled in Kihim village, this restored beachfront estate offers an immersive multi-sensory experience of nature. Indegenious palms, fruit trees and native perennials attract migratory birds. Cement- free hardscaping, permeable surfaces and reused construction materials optimise water management, while site-specific planting and natural thatch roofs for poolside pavilions foster a cool, low- maintenance environment, The design invites a sustainable, carefree tropical lifestyle.                         </div>
+                    </li>
+
+                    <li class="project-item" data-images="duavilla.jpg" data-title="Dua Villa" data-location="Mumbai, Maharashtra" data-type="">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Dua Villa</div>
+                                <span class="project-info-toggle" data-project-title="Dua Villa">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Mumbai, Maharashtra </div>
+                        <div class="project-details-content hidden-content">
+                           Set within the sprawling paddy fields of Awas village, this labyrinthine sanctuary is defined by quiet luxury and reverence for ecology. Orchards, sugarcane grives, and dense native planting foster cool microclimates and thriving biodiversity. A network og courtyards, arched passageways and a cave-like pool dissolve into the foliage, creatubg a landscape of hidden moments, slow rhythms and ever-shifting emotional resonance. 
+                        </div>
+                    </li>
+
+                    <li class="project-item" data-images="banyan.jpg,banyanone.jpg,banyantwo.jpg,banyanthree.jpg" data-title="Forest House" data-location="Mumbai, Maharashtra" data-type="Private Residence">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Forest House</div>
+                                <span class="project-info-toggle" data-project-title="Forest House">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Mumbai, Maharashtra</div>
+                        <div class="project-meta"></div>
+                        <div class="project-details-content hidden-content">
+                             The passage to the site traces an old ecological corridor. Mindful planting along the transect allows native fauna to graze freely, untouched by human rhythm. This sloping garden santuary is shaped by natural contours, permeable surfaces and a dense courtyard plantng that creates a cool microclimate. Whilst a gravel driveway and reused construction waste reinforce circular practice, a coalition of winding paths, wild grasses and native thickets nurture biodiversity and moments of discovery. The gardens operate as a living, breathing arcvhiveof transcience and messy ecology.
+                        </div>
+                    </li>
+                  
+                    <li class="project-item" data-images="shanti_1.mp4, shanti_2.jpg" data-title="Shantiniketan" data-location="Mumbai, Maharashtra" data-type="Private Residence">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Shantiniketan</div>
+                                <span class="project-info-toggle" data-project-title="Shantiniketan">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Delhi / Private Residence</div>
+                        <div class="project-meta"></div>
+                        <div class="project-details-content hidden-content">
+                             The landscape is imagined as a thread binding two robust concrete forms. Landscaping is approached as storytelling, leading occupants through a fluid sequence of spatial experiences: from the intimacy of confinement into the vastness of liberation; through meditative interludes, and finally into the quiet equilibrium that 
+                        </div>
+                    </li>
+
+                    <li class="project-item" data-images="banyan.jpg,banyanone.jpg,banyantwo.jpg,banyanthree.jpg" data-title="The Banyan Villa" data-location="Mumbai, Maharashtra" data-type="Private Residence">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">The Banyan Villa</div>
+                                <span class="project-info-toggle" data-project-title="The Banyan Villa">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Mumbai, Maharashtra</div>
+                        <div class="project-details-content hidden-content">
+Architecture and ecology interock seamlessly at this inward facing sanctuary. The poolscape is punctured by Frangipani islands that operate as micro-habitats. Leftover basalt onsite has been re-used to create a rugged pit that preserves a grove of Thespesia trees. A venerable Banyan is franed by te root-friendly, cement-free courtyard, fosterung deep connections with the landscape. Luxury is equated to sustainability and conscious living.                         </div>
+                    </li>
+
+                    <li class="project-item" data-images="bhouse.jpg,bhouseone.jpg,bhousetwo.jpg,bhousethree.jpg" data-title="The Bougainvillea House" data-location="Mumbai, Maharashtra" data-type="Private Residence">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">The Bougainvillea House</div>
+                                <span class="project-info-toggle" data-project-title="The Bougainvillea House">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Mumbai, Maharashtra</div>
+                        <div class="project-details-content hidden-content">
+Trees emergy from pockets within the home, shading terraces, forming an intimate bind with the foliage; each tree is like generational wealth. The poolscape is punctured with an island micro-habitat. The softscape is like a biryani, with rich layers from groundcover to canopy. At moments, it emulates the sheer riot of a bhel puri. it's a strategic play of scale, scent, and sciagraphy, thinking about the seasons that pass us by.                        </div>
+                    </li>
+
+                    <li class="project-item" data-images="vv_1.jpg,vv_2.jpg,vv_3.jpg,vv_4.jp" data-title="Villa Vanilla" data-location="Mumbai, Maharashtra" data-type="Private Residence">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Villa Vanilla</div>
+                                <span class="project-info-toggle" data-project-title="Villa Vanilla">+</span>
+                            </div>
+                        </div>
+                        <div class="project-meta">Alibaug / Outhouse</div>
+                        <div class="project-meta"></div>
+                        <div class="project-details-content hidden-content">
+Villa Vanilla gazes upon the Alibaug shore, at quaint fishing hutments and motlen sunsets, It unfolds as a linear sequence of oavilions woven between mature coconut palms, gardens, and gleaming water bodies. Courtyards and verandhas blur the boundaries between interior and exterior, creating a resort-like experience. Thoughtful ecological interventions and a lush tropical palette define a sustainable, sit-responsinve intepretation of comtemporary coastal living.                         </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="year-block">
+                <div class="year-label">Products</div>
+                <ul class="project-list">
+                    <li class="project-item" data-images="meso_1.jpg,meso_2.jpg,meso_3.jpg,meso_4.jpg" data-title="Carpe Diem" data-location="Alibaug" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Meso Bench</div>
+                            </div>
+                        </div>
+                        <div class="project-meta">Product Design</div>
+                    </li>
+
+                    <li class="project-item" data-images="rock_1.jpg,rock_2.jpg,rock_3.jpg,rock_4.jpg" data-title="Rock Bench and Console" data-location="Alibaug" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Rock Bench and Console</div>
+                            </div>
+                        </div>
+                        <div class="project-meta">Product Design</div>
+                    </li>
+
+                    <li class="project-item" data-images="rp_1.jpg,rp_2.jpg,rp_3.jpg,rp_4.jpg" data-title="Rock Plate" data-location="Alibaug" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Rock Plate</div>
+                            </div>
+                        </div>
+                        <div class="project-meta">Product Design</div>
+                    </li>
+
+                    <li class="project-item" data-images="vase_1.jpg,vase_2.jpg,vase_3.jpg,vase_4.jpg,vase_5.jpg,vase_6.jpg," data-title="Rock Vase and Pyrite Vase" data-location="Alibaug" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Rock Vase and Pyrite Vase</div>
+                            </div>
+                        </div>
+                        <div class="project-meta">Product Design</div>
+                    </li>
+
+                    <li class="project-item" data-images="scooped_1.jpg,scooped_2.jpg,scooped_3.jpg,scooped_4.jpg" data-title="Scooped Boulders" data-location="Alibaug" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Scooped Boulders</div>
+                            </div>
+                        </div>
+                        <div class="project-meta">Product Design</div>
+                    </li>
+
+                    <li class="project-item" data-images="s_1.jpg,s_2.jpg,s_3.jpg,s_4.jpg,s_5.jpg,s_6.jpg,s_7.jpg,s_8.jpg,s_9.jpg,s_10.jpg,s_11.jpg,s_12.jpg" data-title="Shanti Beach" data-location="Alibaug" data-type="Outhouse">
+                        <div class="project-title-container">
+                            <span class="project-dot"></span>
+                            <div class="project-text-wrapper">
+                                <div class="project-title">Shanti Beach</div>
+                            </div>
+                        </div>
+                        <div class="project-meta">Product Design</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="display-panel">
+            <div class="image-card">
+                <img class="display-img" id="displayImg" src="" alt="">
+                <div class="image-details" id="imageDetails">
+                    <div class="details-left">
+                        <div class="details-title">Select a project from the left.</div>
+                    </div>
+                    <div class="details-right">
+                        <div class="image-navigation">
+                            <button class="nav-arrow" id="prevBtn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="image-counter" id="imageCounter">1/1</div>
+                            <button class="nav-arrow" id="nextBtn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const brandLogo = document.getElementById('brandLogo');
+    if (brandLogo) {
+        brandLogo.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    }
+});
+        // Hamburger toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            mobileNavDrawer.classList.toggle('open');
+        });
+
+        // Close drawer when a link is clicked
+        mobileNavDrawer.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileNavDrawer.classList.remove('open');
+            });
+        });
+
+        // ── Project display logic (unchanged) ──
+        const items = document.querySelectorAll('.project-item');
+        const displayImg = document.getElementById('displayImg');
+        const imageDetails = document.getElementById('imageDetails');
+        let previouslyActiveItem = null;
+        let activeProjectData = null;
+        let currentImageIndex = 0;
+        let currentImages = [];
+
+        function getNavElements() {
+            return {
+                prevBtn: document.getElementById('prevBtn'),
+                nextBtn: document.getElementById('nextBtn'),
+                imageCounter: document.getElementById('imageCounter')
+            };
+        }
+
+        function updateNavigation() {
+            const { prevBtn, nextBtn, imageCounter } = getNavElements();
+            if (!prevBtn || !nextBtn || !imageCounter) return;
+
+            if (currentImages.length <= 1) {
+                prevBtn.style.opacity = '0.3';
+                nextBtn.style.opacity = '0.3';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+            } else {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+                prevBtn.style.opacity = currentImageIndex === 0 ? '0.3' : '1';
+                nextBtn.style.opacity = currentImageIndex === currentImages.length - 1 ? '0.3' : '1';
+            }
+            imageCounter.textContent = `${currentImageIndex + 1}/${currentImages.length}`;
+        }
+
+        function showImage(index) {
+            if (currentImages.length === 0) return;
+            currentImageIndex = Math.max(0, Math.min(index, currentImages.length - 1));
+            displayImg.classList.remove('active');
+            displayImg.src = currentImages[currentImageIndex];
+            displayImg.onload = () => { displayImg.classList.add('active'); };
+            updateNavigation();
+        }
+
+        function attachNavigationListeners() {
+            const { prevBtn, nextBtn } = getNavElements();
+            if (!prevBtn || !nextBtn) return;
+
+            const newPrevBtn = prevBtn.cloneNode(true);
+            const newNextBtn = nextBtn.cloneNode(true);
+            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+            newPrevBtn.addEventListener('click', () => {
+                if (currentImageIndex > 0) showImage(currentImageIndex - 1);
+            });
+            newNextBtn.addEventListener('click', () => {
+                if (currentImageIndex < currentImages.length - 1) showImage(currentImageIndex + 1);
+            });
+
+            newPrevBtn.id = 'prevBtn';
+            newNextBtn.id = 'nextBtn';
+        }
+
+        function updateDisplayPanel(item) {
+            const { images, title, location, type } = item.dataset;
+            currentImages = images ? images.split(',').filter(img => img.trim() !== '') : [];
+            currentImageIndex = 0;
+
+            imageDetails.innerHTML = `
+                <div class="details-left">
+                    <div class="details-title">${title}</div>
+                    <div class="details-meta">${location}</div>
+                </div>
+                <div class="details-right">
+                    <div class="image-navigation">
+                        <button class="nav-arrow" id="prevBtn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="image-counter" id="imageCounter">1/1</div>
+                        <button class="nav-arrow" id="nextBtn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            attachNavigationListeners();
+
+            if (currentImages.length > 0) {
+                showImage(0);
+            } else {
+                displayImg.classList.remove('active');
+                displayImg.src = '';
+                const { prevBtn, nextBtn, imageCounter } = getNavElements();
+                if (imageCounter) imageCounter.textContent = '0/0';
+                if (prevBtn) { prevBtn.style.opacity = '0.3'; prevBtn.disabled = true; }
+                if (nextBtn) { nextBtn.style.opacity = '0.3'; nextBtn.disabled = true; }
+                const detailsLeft = imageDetails.querySelector('.details-left');
+                if (detailsLeft) {
+                    detailsLeft.innerHTML += '<div style="color: #757770; font-style: italic; margin-top: 20px;">Images not available for this project.</div>';
+                }
+            }
+        }
+
+        document.querySelectorAll('.project-info-toggle').forEach(plusSign => {
+            plusSign.addEventListener('click', function(event) {
+                event.stopPropagation();
+                const projectItem = this.closest('.project-item');
+                const detailsContent = projectItem.querySelector('.project-details-content');
+                const isCurrentlyOpen = !detailsContent.classList.contains('hidden-content');
+
+                document.querySelectorAll('.project-info-toggle').forEach(otherPlus => {
+                    otherPlus.classList.remove('active');
+                });
+                document.querySelectorAll('.project-details-content').forEach(content => {
+                    content.classList.add('hidden-content');
+                });
+
+                if (!isCurrentlyOpen && detailsContent) {
+                    this.classList.add('active');
+                    detailsContent.classList.remove('hidden-content');
+                }
+            });
+        });
+
+        items.forEach(item => {
+            item.addEventListener('click', function() {
+                if (previouslyActiveItem) previouslyActiveItem.classList.add('viewed');
+                items.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                previouslyActiveItem = this;
+                activeProjectData = this.dataset;
+                updateDisplayPanel(this);
+            });
+        });
+
+        if (items.length > 0) items[0].click();
+    </script>
+</body>
+</html>

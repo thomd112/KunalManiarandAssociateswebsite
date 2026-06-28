@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Kunal Maniar and Associates</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            font-family: "DM Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+        
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-text {
+            font-family: "DM Sans", sans-serif;
+            font-size: 4rem;
+            font-weight: 300;
+            color: #000000;
+            letter-spacing: 0.3em;
+            margin-bottom: 2rem;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        
+        .loading-time {
+            font-family: "DM Sans", sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #000000;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 1; }
+        }
+      
+        
+        /* Main content styles - hidden initially */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-out;
+        }
+        
+        .main-content.visible {
+            opacity: 1;
+        }
+        
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bg-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+        }
+        .bg-video {
+           position: absolute;
+            top: 80px;
+            left: 40px;
+            right: 40px;
+            bottom: 100px;
+            width: calc(100vw - 80px);
+            height: calc(100vh - 170px);
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(.77,0,.18,1);
+        }
+
+ 
+
+        .bg-video.active {
+            opacity: 1;
+            z-index: 1;
+        }
+        
+        /* Top navigation bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            
+        }
+        
+        .brand-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .brand-logo {
+           width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .brand-logo:hover {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            font-family: "DM Sans", sans-serif;
+            color: #000000;
+            font-size: 16px;
+            font-weight: 400;
+            /* letter-spacing: 0.08em; */
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-transform: capitalize;
+            font-weight: 200;
+        }
+        
+        .nav-links a:hover {
+            color: #CAD090;
+        }
+
+        .volume-control {
+            position: fixed;
+            bottom: 30px;
+            right: 25px;
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            /* border: 1px solid rgba(0, 0, 0, 0.1); */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .volume-control:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+            /* border-color: rgba(0, 0, 0, 0.2); */
+        }
+        
+        .volume-icon {
+            width: 20px;
+            height: 20px;
+            fill: #000000;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .volume-control:hover .volume-icon {
+            opacity: 1;
+        }
+        
+        .caption {
+            position: fixed;
+            bottom: 30px;
+            left: 40px;
+            font-family: "DM Sans", sans-serif;
+            color: #000000;
+            font-size: 16px;
+            font-weight: 200;
+            text-align: left;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(.77,0,.18,1);
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            height: 50px;
+        }
+
+        .caption.active {
+            opacity: 1;
+        }
+        
+        .credit-text {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            font-family: "DM Sans", sans-serif;
+            color: #000000;
+            font-size: 16px;
+            font-weight: 400;
+            /* letter-spacing: 0.08em; */
+            text-align: right;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(.77,0,.18,1);
+            text-transform: capitalize;
+        }
+        
+        .credit-text.active {
+            opacity: 1;
+        }
+
+        /* White overlay to ensure corners are visible */
+        .corner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            background: #ffffff;
+            pointer-events: none;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">KMA<span class="loading-dots"></span></div>
+        <div class="loading-time" id="mumbaiTime">Mumbai, IST</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="corner-overlay"></div>
+        
+        <div class="bg-container">
+            <video src="videos/Dua Villa - KMA - Teaser (online-video-cutter.com).mp4" class="bg-video active" id="bg1" muted loop autoplay preload="auto"></video>
+            <video src="videos/Edit 2 - Madon House by Kunal Maniar & Assosciates - A Sohaib Ilyas Film (online-video-cutter.com).mp4" class="bg-video" id="bg2" muted loop preload="auto"></video>
+            <video src="videos/The Bougainvillae House by KMA (online-video-cutter.com).mp4" class="bg-video" id="bg3" muted loop preload="auto"></video>
+        </div>
+        
+        <div class="top-nav">
+            <div class="brand-section">
+                <img src="logo.png" class="brand-logo" alt="KMA Logo" id="brandLogo">
+            </div>
+            
+            <div class="nav-links">
+                <a href="projects.html">Index</a>
+                <a href="press.html">Press</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        
+        <div class="volume-control" id="volumeBtn">
+            <svg class="volume-icon" id="volumeIcon" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+        </div>
+        
+        <!-- <div class="credit-text" id="creditText">Videography By Sohaib Ilyas</div> -->
+        
+        <div class="caption active" id="caption1">Dua villa</div>
+        <div class="caption" id="caption2">Forest house</div>
+        <div class="caption" id="caption3">Bougainvillae house</div>
+    </div>
+    
+    <script>
+        // Update Mumbai time function
+        function updateMumbaiTime() {
+            const now = new Date();
+            const mumbaiTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Kolkata"}));
+            const timeString = mumbaiTime.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('mumbaiTime').textContent = `${timeString} Mumbai, IST`;
+        }
+        
+        // Update time every second during loading
+        const timeInterval = setInterval(updateMumbaiTime, 1000);
+        updateMumbaiTime(); // Initial call
+        
+        // Loading screen functionality
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                // Clear time interval
+                clearInterval(timeInterval);
+                
+                // Hide loading screen
+                document.getElementById('loadingScreen').classList.add('hidden');
+                
+                // Show main content
+                setTimeout(function() {
+                    document.getElementById('mainContent').classList.add('visible');
+                    
+                    // Initialize main functionality after content is visible
+                    initializeMainContent();
+                }, 400);
+            }, 2000); // Show loading for 2 seconds minimum
+        });
+        
+        function initializeMainContent() {
+            // Brand logo click functionality - goes to homepage
+            const brandLogo = document.getElementById('brandLogo');
+            brandLogo.addEventListener('click', function() {
+                // Reload the current page (homepage)
+                window.location.reload();
+            });
+            
+            // Credit text animation
+            const creditText = document.getElementById('creditText');
+            setTimeout(() => {
+                creditText.classList.add('active');
+            }, 1000);
+            
+            setTimeout(() => {
+                creditText.classList.remove('active');
+            }, 5000);
+
+            // Automatic video transitions every 10 seconds (infinite loop)
+            let currentIndex = 0;
+            let isMuted = true;
+            const videos = [
+                document.getElementById('bg1'),
+                document.getElementById('bg2'),
+                document.getElementById('bg3')
+            ];
+            const captions = [
+                document.getElementById('caption1'),
+                document.getElementById('caption2'),
+                document.getElementById('caption3')
+            ];
+
+            // Volume control functionality
+            const volumeBtn = document.getElementById('volumeBtn');
+            const volumeIcon = document.getElementById('volumeIcon');
+            volumeBtn.addEventListener('click', function() {
+                isMuted = !isMuted;
+                videos.forEach(video => {
+                    video.muted = isMuted;
+                });
+                // Update icon based on mute state
+                if (isMuted) {
+                    volumeIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+                } else {
+                    volumeIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM19 12c0 2.53-1.5 4.71-3.66 5.73l-.77-1.39c1.66-.85 2.43-2.64 2.43-4.34s-.77-3.49-2.43-4.34l.77-1.39c2.16 1.02 3.66 3.2 3.66 5.73zm-10.5 5L3 12.5v-1L8.5 7H12v10H8.5z"/><path d="M7 9H3v6h4l5 5V4l-5 5z"/>';
+                }
+            });
+
+            // Ensure all videos are properly loaded and ready
+            let videosLoaded = 0;
+            videos.forEach((video, index) => {
+                video.addEventListener('loadeddata', () => {
+                    videosLoaded++;
+                    if (videosLoaded === 1 && index === 0) {
+                        video.play().catch(e => console.log('Autoplay prevented:', e));
+                    }
+                });
+                video.addEventListener('ended', () => {
+                    video.currentTime = 0;
+                    video.play();
+                });
+            });
+
+            function switchToNextVideo() {
+                const nextIndex = (currentIndex + 1) % videos.length;
+
+                // Prepare next video
+                videos[nextIndex].muted = isMuted;
+                videos[nextIndex].play().catch(e => {
+                    console.log('Play error:', e);
+                });
+
+                // Fade out current video and caption
+                videos[currentIndex].classList.remove('active');
+                captions[currentIndex].classList.remove('active');
+
+                // Fade in next video and caption after a short delay for smoothness
+                setTimeout(() => {
+                    videos[nextIndex].classList.add('active');
+                    captions[nextIndex].classList.add('active');
+                    currentIndex = nextIndex;
+                }, 400); // 400ms delay for smoother transition
+            }
+
+            // Start the automatic slideshow after a brief delay
+            setTimeout(() => {
+                videos[0].play().catch(e => console.log('Initial play prevented:', e));
+                setInterval(switchToNextVideo, 10000);
+            }, 500);
+        }
+    </script>
+</body>
+</html>

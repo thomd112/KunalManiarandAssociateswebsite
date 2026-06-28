@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Kunal Maniar and Associates - Press</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* CSS Variables from the Index Page */
+        :root {
+            --primary-text-color: #000000;
+            --secondary-text-color: #757770;
+            --background-color: #ffffff;
+            --sidebar-background: #fff;
+            --panel-background: #ffffff;
+            --hover-color: #CAD090;
+            --active-dot-color: #809354;
+            --scrollbar-thumb-color: rgba(202, 208, 144, 0.6);
+            --scrollbar-thumb-hover-color: rgba(202, 208, 144, 0.9);
+            --font-family-dm-sans: 'DM Sans', sans-serif;
+            --header-height: 80px;
+        }
+
+        /* Base Styles - Consistency in Font and Background */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--background-color);
+            width: 100%;
+            position: relative;
+            font-family: var(--font-family-dm-sans);
+            font-weight: 300; 
+            color: var(--primary-text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-optical-sizing: auto;
+        }
+
+        /* Top navigation bar (Fixed Position - Index Style) */
+        .top-nav {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .brand-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--primary-text-color);
+            font-size: 16px;
+            font-weight: 200; 
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-transform: capitalize;
+        }
+        
+        .nav-links a:hover {
+            color: var(--hover-color);
+        }
+        
+        /* Active Link Styles */
+        .nav-links a.active-link {
+            font-weight: 300; 
+            border-bottom: none;
+            text-decoration: none;
+        }
+
+        /* --- PRESS PAGE LAYOUT: Adopted Index Sidebar/Content Structure --- */
+        .app-container {
+            display: flex;
+            flex: 1; 
+            height: calc(100vh - var(--header-height)); 
+            margin-top: var(--header-height); 
+            overflow: hidden; 
+        }
+
+        /* 1. Sidebar for Filtering (Index Style Spacing) */
+        .sidebar {
+            width: 320px; 
+            flex-shrink: 0;
+            position: relative; 
+            background: var(--sidebar-background);
+            box-shadow: 1px 0 15px rgba(0,0,0,0.07);
+            overflow-y: auto;
+            padding: 32px 0; /* Index sidebar padding for top alignment */
+            z-index: 2;
+            height: 100%; 
+        }
+        
+        /* Scrollbar styling from the index page */
+        .sidebar::-webkit-scrollbar { width: 4px; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .sidebar:hover::-webkit-scrollbar { opacity: 1; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-color); border-radius: 3px; }
+        .sidebar::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-color); }
+        .sidebar::-webkit-scrollbar-track { background: transparent; margin: 32px 0; }
+
+        /* REVISED: Filter Header -> Year Label Style */
+        .year-label { 
+            margin: 0 40px 10px 40px;
+            font-size: 17px;
+            font-weight: 400; 
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 4px;
+            text-transform: capitalize; 
+            letter-spacing: 0;
+            color: var(--primary-text-color);
+        }
+
+        /* REVISED: Project List Container */
+        .project-list { 
+            list-style: none;
+            padding: 0 40px; 
+            margin: 0 0 35px 0; 
+        }
+        
+        .filter-block {
+            margin-bottom: 35px;
+        }
+
+        /* REVISED: Project Item LI Style */
+        .project-item { 
+            margin-bottom: 13px; 
+            padding: 0;
+            padding: 12px 10px; 
+            margin-left: -14px; 
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .project-item:hover {
+          background-color: #ffffff; 
+        }
+        
+        .project-item a { 
+            display: flex; 
+            align-items: center;
+            font-size: 15px; 
+            font-weight: 300;
+            color: #000000;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            line-height: 1.2;
+            cursor: pointer;
+            padding: 0; 
+            margin: 0; 
+            position: relative;
+            gap: 8px; 
+        }
+
+        .project-item a:hover {
+            color: #000000;
+            background-color: transparent; 
+        }
+
+        /* Dot Styling */
+        .year-dot { 
+            width: 6px;
+            height: 6px;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        /* Active State */
+        .project-item a.active-year {
+            color: var(--primary-text-color);
+            font-weight: 300; 
+            background-color: transparent; 
+        }
+
+        /* Active dot style */
+        .project-item a.active-year .year-dot {
+            background: var(--active-dot-color);
+            width: 8px;
+            height: 8px;
+        }
+        
+        /* View All Button */
+        .view-all-btn {
+            display: block;
+            margin: 10px 40px 10px 26px;
+            padding: 8px 16px;
+            font-family: var(--font-family-dm-sans);
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--secondary-text-color);
+            background: transparent;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+            text-align: center;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .view-all-btn:hover {
+            color: var(--primary-text-color);
+            border-color: #b0b0b0;
+        }
+
+        /* New Style: Meta Line */
+        .project-meta {
+            font-size: 13px;
+            color: var(--secondary-text-color);
+            margin-top: 2px;
+            margin-left: 16px; 
+            display: block; 
+            padding-left: 5px; 
+        }
+
+        /* 2. Main Content Grid (Display Panel Style) */
+        .press-content {
+            flex: 1;
+            overflow-y: auto; 
+            background: var(--panel-background);
+            box-sizing: border-box;
+            padding: 32px 40px 80px 80px; 
+        }
+        
+        /* Content Scrollbar */
+         .press-content::-webkit-scrollbar { width: 4px; opacity: 0; transition: opacity 0.3s ease-in-out; }
+         .press-content:hover::-webkit-scrollbar { opacity: 1; }
+         .press-content::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-color); border-radius: 3px; }
+         .press-content::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-color); }
+         .press-content::-webkit-scrollbar-track { background: transparent; }
+
+        .content-header {
+            max-width: 1400px;
+            margin: 0 auto 60px auto; 
+            padding: 0; 
+        }
+
+        .content-header h1 {
+            font-size: 3.2rem; 
+            font-weight: 300;
+            margin: 0;
+            line-height: 1.1;
+        }
+        .content-header p {
+            font-size: 1.1rem;
+            font-weight: 300; 
+            color: var(--secondary-text-color);
+            margin-top: 10px;
+        }
+
+        .press-grid-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 0 80px 0; 
+        }
+
+        .press-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px; 
+        }
+
+        /* 3. Press Card Styling */
+        .press-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+        }
+
+       .card-image-wrapper {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    background: #ffffff;   /* ← this gray */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-metadata {
+            font-size: 0.85rem; 
+            font-weight: 400;
+            color: var(--secondary-text-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .card-title {
+            font-size: 1.3rem; 
+            font-weight: 400; 
+            line-height: 1.3;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Media Queries - Mobile Reset */
+        @media (max-width: 1024px) {
+            .top-nav {
+                padding: 0 20px;
+            }
+            .app-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto; 
+                max-height: 200px; 
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                box-shadow: none;
+                overflow-y: scroll;
+                padding: 20px 0;
+            }
+            .year-label {
+                margin: 0 20px 10px 20px;
+            }
+            .project-list {
+                padding: 0 20px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px 25px;
+                margin-bottom: 0;
+            }
+            .project-item {
+                 margin-bottom: 0;
+                 padding: 5px 8px;
+                 margin-left: -8px;
+            }
+            .project-item a {
+                font-size: 14px;
+            }
+            .project-item a.active-year .year-dot {
+                display: none; 
+            }
+            .project-meta {
+                display: none; 
+            }
+            .press-content {
+                padding: 20px;
+                padding-bottom: 40px;
+            }
+            .content-header {
+                margin-bottom: 30px;
+                padding: 0;
+            }
+            .content-header h1 {
+                font-size: 2.5rem;
+            }
+            .press-grid-wrapper {
+                padding: 0 0 40px 0;
+            }
+            .press-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="brand-section">
+            <img src="logo.png" class="brand-logo" alt="KMA Logo" id="brandLogo">
+        </div>
+        
+        <div class="nav-links">
+            <a href="projects.html">Index</a>
+            <a href="press.html" class="active-link">Press</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="filter-block">
+                <div class="year-label">Press</div> 
+                <ul class="project-list" id="yearFilters"> 
+                    <li class="project-item">
+                        <a href="#2026" data-year="2026">
+                            <div class="year-dot"></div>
+                            2026
+                        </a>
+                        <div class="project-meta">Good Homes India</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2025" data-year="2025">
+                            <div class="year-dot"></div>
+                            2025
+                        </a>
+                        <div class="project-meta">Mono Architecture</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2024" data-year="2024">
+                            <div class="year-dot"></div>
+                            2024
+                        </a>
+                        <div class="project-meta">Architecture + Design</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2023" data-year="2023">
+                            <div class="year-dot"></div>
+                            2023 
+                        </a>
+                        <div class="project-meta">Designverse</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2022" data-year="2022">
+                            <div class="year-dot"></div>
+                            2022
+                        </a>
+                        <div class="project-meta">Architectural Digest</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2021" data-year="2021">
+                            <div class="year-dot"></div>
+                            2021
+                        </a>
+                        <div class="project-meta">Architectural Digest</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2020" data-year="2020">
+                            <div class="year-dot"></div>
+                            2020
+                        </a>
+                        <div class="project-meta">Architectural Digest</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2019" data-year="2019">
+                            <div class="year-dot"></div>
+                            2019
+                        </a>
+                        <div class="project-meta">Architectural Digest</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2018" data-year="2018">
+                            <div class="year-dot"></div>
+                            2018
+                        </a>
+                        <div class="project-meta">Luxe Code</div> 
+                    </li>
+                    <li class="project-item">
+                        <a href="#2013" data-year="2013">
+                            <div class="year-dot"></div>
+                            2013
+                        </a>
+                        <div class="project-meta">Robb Report India</div> 
+                    </li>
+                </ul>
+            </div>
+            
+            <button class="view-all-btn" id="viewAllBtn">View All</button>
+        </aside>
+
+        <main class="press-content">
+            <div class="content-header">
+                <h1>Press</h1>
+                <p>Selected features and publications</p>
+            </div>
+            
+            <div class="press-grid-wrapper">
+                <div class="press-grid">
+
+                    <!-- 2026 -->
+                    <div class="press-card year-2026" id="2026-1">
+                        <div class="card-image-wrapper">
+                            <img src="Goodhomes2_2026.png" class="card-image" alt="Image for Dua Villa Feature">
+                        </div>
+                        <div class="card-metadata">Good Homes India • January - February 2026</div>
+                        <h2 class="card-title">The Great Green Escape</h2>
+                    </div>
+
+                    <div class="press-card year-2026" id="2026-2">
+                        <div class="card-image-wrapper">
+                            <img src="AD_2026.png" class="card-image" alt="Image for Dua Villa Feature">
+                        </div>
+                        <div class="card-metadata">Architectural Digest • January - February 2026</div>
+                        <h2 class="card-title">Presenting Kunal Maniar's Monument to love, crafted in stone and wood.</h2>
+                    </div>
+
+                    <div class="press-card year-2026" id="2026-3">
+                        <div class="card-image-wrapper">
+                            <img src="goodhomes_2026.png" class="card-image" alt="Image for Dua Villa Feature">
+                        </div>
+                        <div class="card-metadata">Good Homes • March - April 2026</div>
+                        <h2 class="card-title">Led by the Landscape</h2>
+                    </div>
+
+                    <!-- 2025 -->
+                    <div class="press-card year-2025" id="2025-1">
+                        <div class="card-image-wrapper">
+                            <img src="monoArch_2025.png" class="card-image" alt="Image for Dua Villa Feature">
+                        </div>
+                        <div class="card-metadata">Mono Architecture • June 2025</div>
+                        <h2 class="card-title">Maximal Living in Maximum City</h2>
+                    </div>
+
+                    <!-- 2024 -->
+                    <div class="press-card year-2024" id="2024-1">
+                        <div class="card-image-wrapper">
+                            <img src="A+D_2024.png" class="card-image" alt="Image for Dua Villa Feature">
+                        </div>
+                        <div class="card-metadata">Architecture + Design • June 2024</div>
+                        <h2 class="card-title">Kunal Maniar: The Plant Whisperer</h2>
+                    </div>
+
+                    <!-- 2023 -->
+                    <div class="press-card year-2023" id="2023-1">
+                        <div class="card-image-wrapper">
+                            <img src="hd2_2023.png" class="card-image" alt="Image for Dua Villa Feature">
+                        </div>
+                        <div class="card-metadata">Home and Design Trends • Nov 2023</div>
+                        <h2 class="card-title">Ahead of the Game</h2>
+                    </div>
+
+                    <div class="press-card year-2023" id="2023-2">
+                        <div class="card-image-wrapper">
+                            <img src="hd_2023.png" class="card-image" alt="Image for Forest House Feature">
+                        </div>
+                        <div class="card-metadata">Home and Design Trends • 2023</div>
+                        <h2 class="card-title">Ahead of the Game</h2>
+                    </div>
+
+                    <div class="press-card year-2023" id="2023-3">
+                        <div class="card-image-wrapper">
+                            <img src="dv_2023.png" class="card-image" alt="Image for Product Design Feature">
+                        </div>
+                        <div class="card-metadata">Designverse • March 2023</div>
+                        <h2 class="card-title">Landscape design of this serene estate defines the ideals of tropical living</h2>
+                    </div>
+
+                    <div class="press-card year-2023" id="2023-4">
+                        <div class="card-image-wrapper">
+                            <img src="A+D_2023.png" class="card-image" alt="Image for Product Design Feature">
+                        </div>
+                        <div class="card-metadata">Architecture + Design • May 2023</div>
+                        <h2 class="card-title">An Indian Journal of Architecture</h2>
+                    </div>
+
+                    <!-- 2022 -->
+                    <div class="press-card year-2022" id="2022-1">
+                        <div class="card-image-wrapper">
+                            <img src="AD_Dec2022.png" class="card-image" alt="Image for Bougainvillae House Feature">
+                        </div>
+                        <div class="card-metadata">Architectural Digest • December 2022</div>
+                        <h2 class="card-title">When Architecture meets Nature</h2>
+                    </div>
+
+                    <div class="press-card year-2022" id="2022-2">
+                        <div class="card-image-wrapper">
+                            <img src="hello_2022.png" class="card-image" alt="Image for Bougainvillae House Feature">
+                        </div>
+                        <div class="card-metadata">Hello • December 2022</div>
+                        <h2 class="card-title">The Luxury Edit</h2>
+                    </div>
+
+                    <div class="press-card year-2022" id="2022-3">
+                        <div class="card-image-wrapper">
+                            <img src="goodhomes_2022.png" class="card-image" alt="Image for Bougainvillae House Feature">
+                        </div>
+                        <div class="card-metadata">Good Homes • October - November 2022</div>
+                        <h2 class="card-title">Living in the Lap of Nature</h2>
+                    </div>
+
+                    <div class="press-card year-2022" id="2022-4">
+                        <div class="card-image-wrapper">
+                            <img src="elle_2022.png" class="card-image" alt="Image for Bougainvillae House Feature">
+                        </div>
+                        <div class="card-metadata">Elle Decor • October - November 2022</div>
+                        <h2 class="card-title">Off Duty Glamour</h2>
+                    </div>
+
+                    <div class="press-card year-2022" id="2022-5">
+                        <div class="card-image-wrapper">
+                            <img src="AD_2022.png" class="card-image" alt="Image for Secret Gardens Feature">
+                        </div>
+                        <div class="card-metadata">Architectural Digest India • May - June 2022</div>
+                        <h2 class="card-title">Hello Mayo</h2>
+                    </div>
+
+                    <!-- 2021 -->
+                    <div class="press-card year-2021" id="2021-1">
+                        <div class="card-image-wrapper">
+                            <img src="AD_2021.png" class="card-image" alt="Image for Shantiniketan Feature">
+                        </div>
+                        <div class="card-metadata">Architectural Digest • October 2021</div>
+                        <h2 class="card-title">Queen of Her Castle</h2>
+                    </div>
+
+                    <!-- 2020 -->
+                    <div class="press-card year-2020" id="2020-1">
+                        <div class="card-image-wrapper">
+                            <img src="AD_2020.png" class="card-image" alt="Image for Product Feature">
+                        </div>
+                        <div class="card-metadata">Architectural Digest • March - April 2020</div>
+                        <h2 class="card-title">Self Portraits</h2>
+                    </div>
+
+                    <!-- 2019 -->
+                    <div class="press-card year-2019" id="2019-1">
+                        <div class="card-image-wrapper">
+                            <img src="AD_2019.png" class="card-image" alt="Image for Vogue India Feature">
+                        </div>
+                        <div class="card-metadata">Architectural Digest • March - April 2019</div>
+                        <h2 class="card-title">The Alibag Issue</h2>
+                    </div>
+
+                    <!-- 2018 -->
+                    <div class="press-card year-2018" id="2018-1">
+                        <div class="card-image-wrapper">
+                            <img src="Luxe_1.png" class="card-image" alt="Image for Vogue India Feature">
+                        </div>
+                        <div class="card-metadata">Vogue India • Oct 2018</div>
+                        <h2 class="card-title">Design Collboration</h2>
+                    </div>
+
+                    <!-- 2013 -->
+                    <div class="press-card year-2013" id="2013-1">
+                        <div class="card-image-wrapper">
+                            <img src="Rob_1.jpeg" class="card-image" alt="Image for First Feature">
+                        </div>
+                        <div class="card-metadata">Rob Report India • July 2013</div>
+                        <h2 class="card-title">The Mighty Falcon: Flying Nonstop from Mumbai to Sydney</h2>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Brand logo click functionality - goes to homepage
+            const brandLogo = document.getElementById('brandLogo');
+            if (brandLogo) {
+                brandLogo.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            const yearFilterList = document.getElementById('yearFilters');
+            const yearLinks = yearFilterList.querySelectorAll('a');
+            const pressCards = document.querySelectorAll('.press-card');
+
+            // On load: show all cards, no year active
+            pressCards.forEach(card => card.style.display = 'block');
+            yearLinks.forEach(link => link.classList.remove('active-year'));
+
+            function filterCards(selectedYear) {
+                pressCards.forEach(card => {
+                    card.style.display = card.classList.contains(`year-${selectedYear}`) ? 'block' : 'none';
+                });
+            }
+
+            function showAll() {
+                pressCards.forEach(card => card.style.display = 'block');
+                yearLinks.forEach(link => link.classList.remove('active-year'));
+            }
+
+            const viewAllBtn = document.getElementById('viewAllBtn');
+            if (viewAllBtn) {
+                viewAllBtn.addEventListener('click', () => {
+                    showAll();
+                });
+            }
+
+            yearLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Clicking an already-active year resets to show all
+                    if (e.currentTarget.classList.contains('active-year')) {
+                        showAll();
+                    } else {
+                        yearLinks.forEach(l => l.classList.remove('active-year'));
+                        e.currentTarget.classList.add('active-year');
+                        filterCards(e.currentTarget.getAttribute('data-year'));
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8">
+    <title>Kunal Maniar and Associates | Contact</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --primary-text-color: #000000;
+            --secondary-text-color: #757770;
+            --background-color: #ffffff;
+            --sidebar-background: #fff;
+            --panel-background: #ffffff;
+            --hover-color: #CAD090;
+            --active-dot-color: #809354;
+            --scrollbar-thumb-color: rgba(202, 208, 144, 0.6);
+            --scrollbar-thumb-hover-color: rgba(202, 208, 144, 0.9);
+            --font-family-dm-sans: 'DM Sans', sans-serif;
+            --header-height: 80px;
+            --sidebar-width: 50%; /* Image sizes & structural frame left strictly untouched */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--background-color);
+            width: 100%;
+            position: relative;
+            font-family: var(--font-family-dm-sans);
+            font-weight: 300;
+            color: var(--primary-text-color);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── TOP NAV (Consistent across layout systems) ── */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--primary-text-color);
+            font-size: 16px;
+            font-weight: 200;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-transform: capitalize;
+        }
+
+        .nav-links a:hover {
+            color: var(--hover-color);
+        }
+
+        .nav-links a.active {
+            font-weight: 300;
+        }
+
+        /* ── LAYOUT MECHANICS ── */
+        .app-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - var(--header-height));
+            margin-top: var(--header-height);
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL: Untouched structural dimension specs */
+        .panel-left {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--sidebar-background);
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .slideshow {
+            position: absolute;
+            inset: 0;
+        }
+        .slideshow img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1.3s ease-in-out;
+        }
+        .slideshow img.active {
+            opacity: 1;
+        }
+
+        .slide-counter {
+            position: absolute;
+            bottom: 22px;
+            left: 24px;
+            font-size: 14px;
+            color: var(--secondary-text-color);
+            z-index: 10;
+        }
+
+        .slide-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--secondary-text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .dot.active {
+            background: var(--active-dot-color);
+            border-color: var(--active-dot-color);
+            width: 8px;
+            height: 8px;
+        }
+
+        /* RIGHT PANEL: Padding matched to Press page content system */
+        .panel-right {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 40px 80px 80px; 
+            background: var(--panel-background);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-right::-webkit-scrollbar { width: 4px; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .panel-right:hover::-webkit-scrollbar { opacity: 1; }
+        .panel-right::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-color); border-radius: 3px; }
+        .panel-right::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-color); }
+
+        /* ── LARGE HEADER BLOCK (Direct match to Press styling rules) ── */
+        .content-header {
+            max-width: 1400px;
+            margin: 0 0 60px 0;
+            padding: 0;
+        }
+
+        .content-header h1 {
+            font-size: 3.2rem;
+            font-weight: 300;
+            margin: 0;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .content-header p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--secondary-text-color);
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        /* Inner copy stylings aligned to modern layout elements */
+        .quote-block {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--secondary-text-color);
+            border-left: 2px solid var(--hover-color);
+            padding-left: 20px;
+            margin: 0 0 44px 0;
+            max-width: 850px;
+        }
+
+        .about-block {
+            margin-bottom: 44px;
+            max-width: 850px;
+        }
+        .about-block .role {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary-text-color);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .about-block p {
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--secondary-text-color);
+            margin: 0 0 16px 0;
+        }
+        .about-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .rule {
+            width: 100%;
+            height: 1px;
+            background: #eaeaea;
+            margin: 0 0 44px 0;
+        }
+
+        /* Layout details grid configuration */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+        }
+
+        .contact-group h3 {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--primary-text-color);
+            margin: 0 0 12px 0;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 4px;
+        }
+        
+        .contact-group p,
+        .contact-group a {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: var(--secondary-text-color);
+            text-decoration: none;
+            display: block;
+            margin: 0 0 4px 0;
+            transition: color 0.2s ease;
+        }
+        .contact-group a:hover {
+            color: var(--hover-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            font-size: 13.5px;
+            color: var(--secondary-text-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .social-links a:hover {
+            color: var(--hover-color);
+        }
+
+        .panel-footer {
+            margin-top: auto;
+            padding-top: 60px;
+            font-size: 13px;
+            color: var(--secondary-text-color);
+        }
+
+        /* ── RESPONSIVE MEDIA BREAKPOINTS (Adapting Press layout models) ── */
+        @media (max-width: 1024px) {
+            .top-nav {
+                padding: 0 20px;
+            }
+            .panel-right {
+                padding: 32px 40px 40px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            /* Proportions match original specifications for vertical workspace viewports */
+            .panel-left {
+                width: 100%;
+                height: 58vw;
+                min-height: 260px;
+            }
+
+            .panel-right {
+                padding: 32px 20px 44px;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .content-header {
+                margin-bottom: 30px;
+            }
+
+            .content-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel-left {
+                height: 68vw;
+                min-height: 220px;
+            }
+            .content-header h1 {
+                font-size: 2.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="brand-section">
+            <img src="logo.png" class="brand-logo" alt="KMA Logo" id="brandLogo">
+        </div>
+        
+        <div class="nav-links">
+            <a href="projects.html">Index</a>
+            <a href="press.html">Press</a>
+            <a href="contact.html" class="active">Contact</a>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- Image Framework Area — Proportions Left Entirely Intact -->
+        <div class="panel-left">
+            <div class="slideshow" id="slideshow">
+                <img src="office_1.jpeg" alt="KMA Office 1" class="active">
+                <img src="office_2.jpeg" alt="KMA Office 2">
+                <img src="office_3.jpeg" alt="KMA Office 3">
+                <img src="office_4.jpeg" alt="KMA Office 4">
+            </div>
+            <div class="slide-counter" id="slideCounter">1 / 4</div>
+            <div class="slide-dots" id="slideDots">
+                <div class="dot active" data-index="0"></div>
+                <div class="dot" data-index="1"></div>
+                <div class="dot" data-index="2"></div>
+                <div class="dot" data-index="3"></div>
+            </div>
+        </div>
+
+        <!-- Content Display Area — Text and headers updated to fit Press layout profile -->
+        <div class="panel-right">
+
+            <div class="content-header">
+                <h1>Contact</h1>
+                <p>Kunal Maniar and Associates</p>
+            </div>
+
+            <blockquote class="quote-block">
+                "People often relegate landscape design to frivolous planting and embellishment, but really, it's a form of living art. It's about creating spatial experiences… spaces that heal… spaces that bring people together… spaces that confine, yet liberate."
+            </blockquote>
+
+            <div class="about-block" id="about">
+                <div class="role">Founder &amp; Principal Landscape Architect</div>
+                <p>Kunal Maniar and Associates is a Mumbai-based landscape practice established in 2002. Our work reflects our passion for detailed design, innate respect for nature, and sensitivity to ecology.</p>
+                <p>Our services include site analysis, conceptual design and strategy, design development, and site supervision on a periodic basis.</p>
+                <p>Over the past two decades, we have worked at various scales across the public and private realm, with projects ranging from campuses and resorts to rooftop terraces and sprawling weekend homes across the country.</p>
+                <p>Our extensive client list includes eminent figures such as Mukesh and Nita Ambani, Shah Rukh Khan, and Mahendra Singh Dhoni.</p>
+                <p>For the last 6 consecutive years, Architectural Digest India has recognised Kunal Maniar and Associates amongst India's top 100 influential architectural firms.</p>
+            </div>
+
+            <div class="rule"></div>
+
+            <div class="contact-grid" id="contact">
+                <div class="contact-group">
+                    <h3>Office Address</h3>
+                    <p>Kunal Maniar and Associates</p>
+                    <p>212, 2nd floor, Mehta House,</p>
+                    <p>Pandita Ramabai road,</p>
+                    <p>Chowpatty, Opp. Bharatiya Vidya Bhavan,</p>
+                    <p>Mumbai 400007, India</p>
+                </div>
+
+                <div class="contact-group">
+                    <h3>Get In Touch</h3>
+                    <p>Phone</p>
+                    <a href="tel:+02223647006">+022 2364 7006 / 7 / 8 / 9</a>
+                    <p style="margin-top:10px">Email</p>
+                    <a href="mailto:office@kma.co">office@kma.co</a>
+                </div>
+
+                <div class="contact-group">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/kunalmaniarassociates/" target="_blank">Instagram</a>
+                        <a href="https://x.com/kmandassociates" target="_blank">X</a>
+                        <a href="https://www.facebook.com/kunalmaniarandassociates/" target="_blank">Facebook</a>
+                        <a href="https://www.linkedin.com/company/kunal-maniar-associates/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer">© Kunal Maniar and Associates — Mumbai, India</div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Brand link utility mapping
+            const brandLogo = document.getElementById('brandLogo');
+            if (brandLogo) {
+                brandLogo.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Slide framework internal animation controller
+            (function () {
+                const slides  = document.querySelectorAll('#slideshow img');
+                const dots    = document.querySelectorAll('#slideDots .dot');
+                const counter = document.getElementById('slideCounter');
+                if(slides.length === 0) return;
+                
+                let current = 0;
+                const total = slides.length;
+
+                function goTo(n) {
+                    slides[current].classList.remove('active');
+                    dots[current].classList.remove('active');
+                    current = (n + total) % total;
+                    slides[current].classList.add('active');
+                    dots[current].classList.add('active');
+                    if (counter) {
+                        counter.textContent = `${current + 1} / ${total}`;
+                    }
+                }
+
+                dots.forEach(dot => dot.addEventListener('click', () => goTo(+dot.dataset.index)));
+                setInterval(() => goTo(current + 1), 4000);
+            })();
+        });
+    </script>
+</body>
+</html>
