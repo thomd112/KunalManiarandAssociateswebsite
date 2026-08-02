@@ -380,20 +380,18 @@
             ];
 
             // Volume control functionality
-            const volumeBtn = document.getElementById('volumeBtn');
-            const volumeIcon = document.getElementById('volumeIcon');
-            volumeBtn.addEventListener('click', function() {
-                isMuted = !isMuted;
-                videos.forEach(video => {
-                    video.muted = isMuted;
-                });
-                // Update icon based on mute state
-                if (isMuted) {
-                    volumeIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-                } else {
-                    volumeIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM19 12c0 2.53-1.5 4.71-3.66 5.73l-.77-1.39c1.66-.85 2.43-2.64 2.43-4.34s-.77-3.49-2.43-4.34l.77-1.39c2.16 1.02 3.66 3.2 3.66 5.73zm-10.5 5L3 12.5v-1L8.5 7H12v10H8.5z"/><path d="M7 9H3v6h4l5 5V4l-5 5z"/>';
-                }
-            });
+         volumeBtn.addEventListener('click', function() {
+    isMuted = !isMuted;
+    videos.forEach(video => {
+        video.muted = isMuted;
+    });
+    // Update icon based on mute state (reversed)
+    if (isMuted) {
+        volumeIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM19 12c0 2.53-1.5 4.71-3.66 5.73l-.77-1.39c1.66-.85 2.43-2.64 2.43-4.34s-.77-3.49-2.43-4.34l.77-1.39c2.16 1.02 3.66 3.2 3.66 5.73zm-10.5 5L3 12.5v-1L8.5 7H12v10H8.5z"/><path d="M7 9H3v6h4l5 5V4l-5 5z"/>';
+    } else {
+        volumeIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+    }
+});
 
             // Ensure all videos are properly loaded and ready
             let videosLoaded = 0;
