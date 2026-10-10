@@ -1,5 +1,3 @@
-FINAL DINAL FINAL KMA CODE
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -283,9 +281,14 @@ FINAL DINAL FINAL KMA CODE
         <div class="corner-overlay"></div>
         
         <div class="bg-container">
-            <video src="videos/Dua Villa - KMA - Teaser (online-video-cutter.com).mp4" class="bg-video active" id="bg1" muted loop autoplay preload="auto"></video>
-            <video src="videos/Edit 2 - Madon House by Kunal Maniar & Assosciates - A Sohaib Ilyas Film (online-video-cutter.com).mp4" class="bg-video" id="bg2" muted loop preload="auto"></video>
-            <video src="videos/The Bougainvillae House by KMA (online-video-cutter.com).mp4" class="bg-video" id="bg3" muted loop preload="auto"></video>
+            <!--
+                Only the first video has a src at page load. The other two keep their file in
+                data-src and are loaded just before they are shown (saves memory and data on mobile).
+                muted + playsinline are required for mobile autoplay.
+            -->
+            <video src="videos/Dua%20Villa%20-%20KMA%20-%20Teaser%20(online-video-cutter.com).mp4" class="bg-video active" id="bg1" muted loop autoplay playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback preload="auto"></video>
+            <video data-src="videos/Edit%202%20-%20Madon%20House%20by%20Kunal%20Maniar%20%26%20Assosciates%20-%20A%20Sohaib%20Ilyas%20Film%20(online-video-cutter.com).mp4" class="bg-video" id="bg2" muted loop playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback preload="none"></video>
+            <video data-src="videos/The%20Bougainvillae%20House%20by%20KMA%20(online-video-cutter.com).mp4" class="bg-video" id="bg3" muted loop playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback preload="none"></video>
         </div>
         
         <div class="top-nav">
@@ -329,25 +332,35 @@ FINAL DINAL FINAL KMA CODE
         // Update time every second during loading
         const timeInterval = setInterval(updateMumbaiTime, 1000);
         updateMumbaiTime(); // Initial call
-        
+
         // Loading screen functionality
-        window.addEventListener('load', function() {
+        // On mobile the window "load" event can be very slow (or never fire) while video
+        // is downloading, so we also start on a fallback timer. startSite() only runs once.
+        let siteStarted = false;
+        function startSite() {
+            if (siteStarted) return;
+            siteStarted = true;
+
+            // Clear time interval
+            clearInterval(timeInterval);
+
+            // Hide loading screen
+            document.getElementById('loadingScreen').classList.add('hidden');
+
+            // Show main content
             setTimeout(function() {
-                // Clear time interval
-                clearInterval(timeInterval);
-                
-                // Hide loading screen
-                document.getElementById('loadingScreen').classList.add('hidden');
-                
-                // Show main content
-                setTimeout(function() {
-                    document.getElementById('mainContent').classList.add('visible');
-                    
-                    // Initialize main functionality after content is visible
-                    initializeMainContent();
-                }, 400);
-            }, 1200); // Show loading for 2 seconds minimum
+                document.getElementById('mainContent').classList.add('visible');
+
+                // Initialize main functionality after content is visible
+                initializeMainContent();
+            }, 400);
+        }
+
+        window.addEventListener('load', function() {
+            setTimeout(startSite, 1200); // minimum loading screen time
         });
+        // Fallback in case "load" is delayed by large video files on mobile
+        setTimeout(startSite, 4000);
         
         function initializeMainContent() {
             // Brand logo click functionality - goes to homepage
@@ -357,15 +370,17 @@ FINAL DINAL FINAL KMA CODE
                 window.location.reload();
             });
             
-            // Credit text animation
+            // Credit text animation (guarded: the element is commented out in the HTML)
             const creditText = document.getElementById('creditText');
-            setTimeout(() => {
-                creditText.classList.add('active');
-            }, 1000);
-            
-            setTimeout(() => {
-                creditText.classList.remove('active');
-            }, 5000);
+            if (creditText) {
+                setTimeout(() => {
+                    creditText.classList.add('active');
+                }, 1000);
+                
+                setTimeout(() => {
+                    creditText.classList.remove('active');
+                }, 5000);
+            }
 
             // Automatic video transitions every 10 seconds (infinite loop)
             let currentIndex = 0;
@@ -380,44 +395,86 @@ FINAL DINAL FINAL KMA CODE
                 document.getElementById('caption2'),
                 document.getElementById('caption3')
             ];
+            const volumeBtn = document.getElementById('volumeBtn');
+            const volumeIcon = document.getElementById('volumeIcon');
+
+            // Force inline + muted at the property level (mobile requirement for autoplay)
+            videos.forEach(v => {
+                v.muted = true;
+                v.defaultMuted = true;
+                v.setAttribute('muted', '');
+                v.setAttribute('playsinline', '');
+                v.setAttribute('webkit-playsinline', '');
+            });
+
+            // Load a video's file only when it is needed (videos 2 and 3 start with no src)
+            function ensureLoaded(video) {
+                if (!video.getAttribute('src') && video.dataset.src) {
+                    video.setAttribute('src', video.dataset.src);
+                    video.load();
+                }
+            }
+
+            // Play helper: never throws, retries once if the first attempt is rejected
+            function safePlay(video) {
+                ensureLoaded(video);
+                video.muted = isMuted;
+                const attempt = video.play();
+                if (attempt && typeof attempt.catch === 'function') {
+                    attempt.catch(() => {
+                        setTimeout(() => {
+                            const retry = video.play();
+                            if (retry && typeof retry.catch === 'function') retry.catch(() => {});
+                        }, 500);
+                    });
+                }
+            }
+
+            // Fallback: if the browser blocked autoplay (Low Power Mode, data saver, etc.),
+            // the first tap/touch anywhere starts the current video.
+            ['touchstart', 'touchend', 'click'].forEach(evt => {
+                document.addEventListener(evt, () => {
+                    safePlay(videos[currentIndex]);
+                }, { once: true, passive: true });
+            });
+
+            // Resume the current video if the tab/app comes back to the foreground
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) safePlay(videos[currentIndex]);
+            });
 
             // Volume control functionality
-         volumeBtn.addEventListener('click', function() {
-    isMuted = !isMuted;
-    videos.forEach(video => {
-        video.muted = isMuted;
-    });
-    // Update icon based on mute state (reversed)
-    if (isMuted) {
-        volumeIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM19 12c0 2.53-1.5 4.71-3.66 5.73l-.77-1.39c1.66-.85 2.43-2.64 2.43-4.34s-.77-3.49-2.43-4.34l.77-1.39c2.16 1.02 3.66 3.2 3.66 5.73zm-10.5 5L3 12.5v-1L8.5 7H12v10H8.5z"/><path d="M7 9H3v6h4l5 5V4l-5 5z"/>';
-    } else {
-        volumeIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-    }
-});
+            volumeBtn.addEventListener('click', function() {
+                isMuted = !isMuted;
+                videos.forEach(video => {
+                    video.muted = isMuted;
+                });
+                // Update icon based on mute state (reversed)
+                if (isMuted) {
+                    volumeIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM19 12c0 2.53-1.5 4.71-3.66 5.73l-.77-1.39c1.66-.85 2.43-2.64 2.43-4.34s-.77-3.49-2.43-4.34l.77-1.39c2.16 1.02 3.66 3.2 3.66 5.73zm-10.5 5L3 12.5v-1L8.5 7H12v10H8.5z"/><path d="M7 9H3v6h4l5 5V4l-5 5z"/>';
+                } else {
+                    volumeIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+                }
+            });
 
-            // Ensure all videos are properly loaded and ready
-            let videosLoaded = 0;
+            // Log errors so they can be seen in a remote debugger (helps diagnose codec/server issues)
             videos.forEach((video, index) => {
-                video.addEventListener('loadeddata', () => {
-                    videosLoaded++;
-                    if (videosLoaded === 1 && index === 0) {
-                        video.play().catch(e => console.log('Autoplay prevented:', e));
-                    }
+                video.addEventListener('error', () => {
+                    const err = video.error;
+                    console.warn('Video ' + (index + 1) + ' failed to load.',
+                        err ? 'code ' + err.code : '');
                 });
                 video.addEventListener('ended', () => {
                     video.currentTime = 0;
-                    video.play();
+                    safePlay(video);
                 });
             });
 
             function switchToNextVideo() {
                 const nextIndex = (currentIndex + 1) % videos.length;
 
-                // Prepare next video
-                videos[nextIndex].muted = isMuted;
-                videos[nextIndex].play().catch(e => {
-                    console.log('Play error:', e);
-                });
+                // Prepare next video (loads its file if it hasn't been loaded yet)
+                safePlay(videos[nextIndex]);
 
                 // Fade out current video and caption
                 videos[currentIndex].classList.remove('active');
@@ -431,9 +488,13 @@ FINAL DINAL FINAL KMA CODE
                 }, 400); // 400ms delay for smoother transition
             }
 
+            // Start the first video right away, then begin loading the second quietly
+            safePlay(videos[0]);
+            videos[0].addEventListener('loadeddata', () => safePlay(videos[0]), { once: true });
+            videos[0].addEventListener('canplay', () => safePlay(videos[0]), { once: true });
+
             // Start the automatic slideshow after a brief delay
             setTimeout(() => {
-                videos[0].play().catch(e => console.log('Initial play prevented:', e));
                 setInterval(switchToNextVideo, 10000);
             }, 500);
         }
