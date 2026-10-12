@@ -267,6 +267,29 @@
         }
 
 
+        /* MOBILE ONLY: keep the image above the caption so the text sits on white space */
+        @media (max-width: 768px) {
+            .bg-container {
+                height: auto;
+                bottom: 0;              /* follows the visible screen, not the hidden address-bar area */
+            }
+            .bg-video {
+                top: 80px;
+                left: 20px;
+                right: 20px;
+                width: calc(100vw - 40px);
+                height: calc(100% - 190px);   /* 80px top bar + 110px white strip at the bottom */
+                bottom: auto;
+            }
+            .caption {
+                left: 20px;
+                bottom: 30px;
+                height: 50px;
+            }
+            .top-nav {
+                padding: 0 20px;
+            }
+        }
     </style>
 </head>
 <body>
