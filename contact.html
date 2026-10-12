@@ -453,11 +453,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Brand link utility mapping
+            // Brand logo click functionality
+            // Desktop browsers go to the GitHub Pages site; mobile/tablet keep index.html
             const brandLogo = document.getElementById('brandLogo');
             if (brandLogo) {
                 brandLogo.addEventListener('click', function() {
-                    window.location.href = 'index.html';
+                    if (window.innerWidth > 1024) {
+                        window.location.href = 'https://thomd112.github.io/KunalManiarandAssociateswebsite/';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
                 });
             }
 
