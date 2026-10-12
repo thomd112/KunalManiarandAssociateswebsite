@@ -1090,6 +1090,36 @@ Rooted in subcontinental narratives and crafted with local artisans, these are w
         });
 
         if (items.length > 0) items[0].click();
+
+        // ── Preload all images and videos at once ──
+        const preloadedMedia = []; // keeps references so the browser doesn't discard them
+        (function preloadAllMedia() {
+            const allSources = new Set(); // Set avoids duplicate requests (e.g. the banyan images used twice)
+
+            document.querySelectorAll('.project-item').forEach(item => {
+                (item.dataset.images || '')
+                    .split(',')
+                    .map(s => s.trim())
+                    .filter(Boolean)
+                    .forEach(src => allSources.add(src));
+            });
+
+            allSources.forEach(src => {
+                if (VIDEO_REGEX.test(src)) {
+                    const v = document.createElement('video');
+                    v.muted = true;
+                    v.playsInline = true;
+                    v.preload = 'auto';
+                    v.src = src;
+                    v.load();
+                    preloadedMedia.push(v);
+                } else {
+                    const img = new Image();
+                    img.src = src;
+                    preloadedMedia.push(img);
+                }
+            });
+        })();
     </script>
 </body>
 </html>
