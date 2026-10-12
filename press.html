@@ -407,9 +407,7 @@
 <body>
     <div class="top-nav">
         <div class="brand-section">
-            <a href="./" aria-label="Home">
-                <img src="logo.png" class="brand-logo" alt="KMA Logo" id="brandLogo">
-            </a>
+            <img src="logo.png" class="brand-logo" alt="KMA Logo" id="brandLogo">
         </div>
         
         <div class="nav-links">
@@ -679,6 +677,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Brand logo click functionality - goes to homepage
+            const brandLogo = document.getElementById('brandLogo');
+            if (brandLogo) {
+                brandLogo.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+
             const yearFilterList = document.getElementById('yearFilters');
             const yearLinks = yearFilterList.querySelectorAll('a');
             const pressCards = document.querySelectorAll('.press-card');
