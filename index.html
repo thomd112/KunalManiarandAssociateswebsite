@@ -315,6 +315,47 @@
         <div class="caption" id="caption2">Forest house</div>
         <div class="caption" id="caption3">Bougainvillae house</div>
     </div>
+
+    <!--
+        MOBILE ONLY: on phones (screen width 768px or less) the videos are replaced
+        with still images. Desktop keeps the videos exactly as before.
+        This block must stay ABOVE the main script below.
+    -->
+    <script>
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            const mobileImages = {
+                bg1: 'duavilla.jpg',
+                bg2: 'foresthouseone.jpg',
+                bg3: 'bhouse.jpg'
+            };
+
+            Object.keys(mobileImages).forEach(function (id) {
+                const oldVideo = document.getElementById(id);
+
+                // Stop the video from downloading at all
+                oldVideo.pause();
+                oldVideo.removeAttribute('src');
+                oldVideo.removeAttribute('data-src');
+                oldVideo.load();
+
+                const img = document.createElement('img');
+                img.id = id;
+                img.className = oldVideo.className;   // keeps the same size, position and fade
+                img.src = mobileImages[id];
+                img.alt = '';
+
+                // Lets the existing slideshow code run without errors
+                img.play = function () { return Promise.resolve(); };
+                img.pause = function () {};
+                img.load = function () {};
+
+                oldVideo.replaceWith(img);
+            });
+
+            // No sound on images, so hide the volume button
+            document.getElementById('volumeBtn').style.display = 'none';
+        }
+    </script>
     
     <script>
         // Update Mumbai time function
